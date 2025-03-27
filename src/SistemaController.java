@@ -47,7 +47,7 @@ class SistemaController {
         String senha = scanner.nextLine();
 
         for (Usuario usuario : usuarios) {
-            if (usuario.email.equals(email) && usuario.senha.equals(senha)) {
+            if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
                 usuario.login();
                 if (usuario instanceof Paciente) {
                     Paciente paciente = (Paciente) usuario;
