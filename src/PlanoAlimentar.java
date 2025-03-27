@@ -17,7 +17,7 @@ class PlanoAlimentar {
     }
 
     public void adicionarRefeicao(Alimento alimento) {
-        refeicoes.add(alimento); //creator
+        refeicoes.add(alimento);
     }
 
     public void removerRefeicao(Alimento alimento) {

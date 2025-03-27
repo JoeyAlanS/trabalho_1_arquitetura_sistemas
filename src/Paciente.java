@@ -10,7 +10,7 @@ class Paciente extends Usuario {
     }
 
     public void adicionarDiario(Diario diario) {
-        diarios.add(diario); //creator: Paciente, que cria instâncias de Diario
+        diarios.add(diario); 
     }
 
     public void removerDiario(Diario diario) {
