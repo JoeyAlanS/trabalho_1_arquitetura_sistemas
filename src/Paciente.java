@@ -10,7 +10,7 @@ class Paciente extends Usuario {
     }
 
     public void adicionarDiario(Diario diario) {
-        diarios.add(diario);
+        diarios.add(diario); 
     }
 
     public void removerDiario(Diario diario) {
@@ -22,7 +22,7 @@ class Paciente extends Usuario {
     }
 
     public void visualizarDiario() {
-        System.out.println("\nVisualizando alimentos no diário de " + nome);
+        System.out.println("\nVisualizando alimentos no diário de " + getNome());
         for (Diario diario : diarios) {
             System.out.println("Data: " + diario.getData());
             for (Alimento alimento : diario.getRefeicoes()) {
