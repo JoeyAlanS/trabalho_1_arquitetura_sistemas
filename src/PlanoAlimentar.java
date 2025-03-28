@@ -27,4 +27,15 @@ class PlanoAlimentar {
     public List<Alimento> getRefeicoes() {
         return refeicoes;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Plano: ").append(nome).append(" - ").append(descricao).append("\nRefeições:\n");
+        for (Alimento a : refeicoes) {
+            sb.append(a).append("\n");
+        }
+        return sb.toString();
+    }
+
 }

@@ -72,7 +72,8 @@ class MenuService {
             System.out.println("1 - Adicionar alimento");
             System.out.println("2 - Remover alimento");
             System.out.println("3 - Ver alimentos adicionados");
-            System.out.println("4 - Sair");
+            System.out.println("4 - Ver Plano Alimentar");
+            System.out.println("5 - Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
@@ -87,6 +88,9 @@ class MenuService {
                     paciente.visualizarDiario();
                     break;
                 case 4:
+                    paciente.visualizarPlanoAlimentar();
+                    break;
+                case 5:
                     sair = true;
                     break;
                 default:

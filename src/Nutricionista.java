@@ -20,7 +20,12 @@ public class Nutricionista extends Usuario {
         System.out.println("Bem-vinda, " + getNome() + " (Nutricionista)!");
     }
 
-    public void adicionarPlanoAlimentar(Paciente paciente, PlanoAlimentar plano) {
+    public void criarPlanoAlimentar(Paciente paciente, PlanoAlimentar plano) {
+        paciente.setPlanoAlimentar(plano);
+        System.out.println("Plano alimentar atribuído ao paciente " + paciente.getNome());
+    }
+
+    public void editarPlanoAlimentar(Paciente paciente, PlanoAlimentar plano) {
         paciente.setPlanoAlimentar(plano);
         System.out.println("Plano alimentar adicionado ao paciente: " + paciente.getNome());
     }

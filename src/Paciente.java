@@ -31,12 +31,16 @@ class Paciente extends Usuario {
         }
     }
 
-    public PlanoAlimentar buscarPlanoAlimentar() {
-        return planoAlimentar;
-    }
-
     public void setPlanoAlimentar(PlanoAlimentar plano) {
         this.planoAlimentar = plano;
+    }
+
+    public void visualizarPlanoAlimentar() {
+        if (planoAlimentar == null) {
+            System.out.println("Nenhum plano alimentar cadastrado.");
+        } else {
+            System.out.println(planoAlimentar);
+        }
     }
 
     @Override
