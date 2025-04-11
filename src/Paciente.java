@@ -21,16 +21,6 @@ class Paciente extends Usuario {
         return diarios;
     }
 
-    public void visualizarDiario() {
-        System.out.println("\nVisualizando alimentos no diário de " + getNome());
-        for (Diario diario : diarios) {
-            System.out.println("Data: " + diario.getData());
-            for (Alimento alimento : diario.getRefeicoes()) {
-                System.out.println(alimento);
-            }
-        }
-    }
-
     public void setPlanoAlimentar(PlanoAlimentar plano) {
         this.planoAlimentar = plano;
     }

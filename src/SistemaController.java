@@ -11,18 +11,6 @@ class SistemaController {
             usuarioService.registrarUsuario(UsuarioFactory.criarUsuario(2, "Ana", "00000000000", "ana@email.com", "5678", "1234"));
         }
 
-        System.out.println("MENU DE LOGIN");
-        System.out.println("1 - Fazer login");
-        System.out.println("2 - Cadastrar-se");
-        int escolha = scanner.nextInt();
-        scanner.nextLine();
-
-        if (escolha == 1) {
-            menuService.loginUsuario();
-        } else if (escolha == 2) {
-            menuService.cadastrarUsuario();
-        } else {
-            System.out.println("Opção inválida!");
-        }
+        menuService.exibirMenuLogin();
     }
 }

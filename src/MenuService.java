@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 class MenuService {
@@ -8,7 +9,24 @@ class MenuService {
     public MenuService(Scanner scanner, UsuarioService usuarioService) {
         this.scanner = scanner;
         this.usuarioService = usuarioService;
-        this.diarioService = new DiarioService(scanner);
+        this.diarioService = new DiarioService();
+    }
+
+    public void exibirMenuLogin() {
+        System.out.println("MENU DE LOGIN");
+        System.out.println("1 - Fazer login");
+        System.out.println("2 - Cadastrar-se");
+
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+
+        if (escolha == 1) {
+            loginUsuario();
+        } else if (escolha == 2) {
+            cadastrarUsuario();
+        } else {
+            System.out.println("Opção inválida!");
+        }
     }
 
     public void loginUsuario() {
@@ -35,6 +53,7 @@ class MenuService {
         System.out.println("Escolha o tipo de usuário");
         System.out.println("1 - Paciente");
         System.out.println("2 - Nutricionista");
+
         int tipo = scanner.nextInt();
         scanner.nextLine();
 
@@ -71,30 +90,65 @@ class MenuService {
             System.out.println("\nMENU PACIENTE");
             System.out.println("1 - Adicionar alimento");
             System.out.println("2 - Remover alimento");
-            System.out.println("3 - Ver alimentos adicionados");
-            System.out.println("4 - Ver Plano Alimentar");
+            System.out.println("3 - Ver diário de hoje");
+            System.out.println("4 - Ver plano alimentar");
             System.out.println("5 - Sair");
+
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
             switch (opcao) {
-                case 1:
-                    diarioService.adicionarAlimento(paciente);
-                    break;
-                case 2:
-                    diarioService.removerAlimento(paciente);
-                    break;
-                case 3:
-                    paciente.visualizarDiario();
-                    break;
-                case 4:
-                    paciente.visualizarPlanoAlimentar();
-                    break;
-                case 5:
-                    sair = true;
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
+                case 1 -> {
+                    System.out.println("Nome do alimento:");
+                    String nome = scanner.nextLine();
+
+                    System.out.println("Quantidade em gramas:");
+                    double quantidade = scanner.nextDouble();
+
+                    System.out.println("Calorias:");
+                    double calorias = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    diarioService.adicionarAlimento(paciente, nome, quantidade, calorias);
+                    System.out.println("Alimento adicionado com sucesso!");
+                }
+                case 2 -> {
+                    Diario diario = diarioService.obterDiarioDoDia(paciente);
+                    if (diario == null || diario.getRefeicoes().isEmpty()) {
+                        System.out.println("Nenhum alimento encontrado no diário de hoje.");
+                        break;
+                    }
+
+                    System.out.println("Alimentos registrados hoje:");
+                    List<Alimento> alimentos = diario.getRefeicoes();
+                    for (int i = 0; i < alimentos.size(); i++) {
+                        System.out.println((i + 1) + " - " + alimentos.get(i));
+                    }
+
+                    System.out.println("Escolha o alimento para remover:");
+                    int indice = scanner.nextInt() - 1;
+                    scanner.nextLine();
+
+                    if (diarioService.removerAlimento(paciente, indice)) {
+                        System.out.println("Alimento removido com sucesso!");
+                    } else {
+                        System.out.println("Opção inválida ou alimento não encontrado.");
+                    }
+                }
+                case 3 -> {
+                    Diario diario = diarioService.obterDiarioDoDia(paciente);
+                    if (diario == null || diario.getRefeicoes().isEmpty()) {
+                        System.out.println("Nenhum alimento registrado hoje.");
+                    } else {
+                        System.out.println("Diário de hoje:");
+                        for (Alimento a : diario.getRefeicoes()) {
+                            System.out.println(a);
+                        }
+                    }
+                }
+                case 4 -> paciente.visualizarPlanoAlimentar();
+                case 5 -> sair = true;
+                default -> System.out.println("Opção inválida!");
             }
         }
     }

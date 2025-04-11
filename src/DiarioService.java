@@ -1,82 +1,47 @@
 import java.util.Date;
-import java.util.Scanner;
+import java.util.Optional;
 
 class DiarioService {
-    private Scanner scanner;
 
-    public DiarioService(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    public void adicionarAlimento(Paciente paciente) {
-        System.out.println("Digite o nome do alimento:");
-        String nome = scanner.nextLine();
-
-        System.out.println("Digite a quantidade em gramas:");
-        double quantidade = scanner.nextDouble();
-
-        System.out.println("Digite as calorias:");
-        double calorias = scanner.nextDouble();
-        scanner.nextLine();
-
+    public void adicionarAlimento(Paciente paciente, String nome, double quantidade, double calorias) {
         Alimento alimento = new Alimento(nome, quantidade, calorias);
-
-        Diario diario;
-        if (paciente.getDiarios().isEmpty() || paciente.getDiarios().get(paciente.getDiarios().size() - 1).getData().before(new Date())) {
-            diario = new Diario(new Date());
-            paciente.adicionarDiario(diario);
-        } else {
-            diario = paciente.getDiarios().get(paciente.getDiarios().size() - 1);
-        }
-
+        Diario diario = buscarOuCriarDiarioDoDia(paciente);
         diario.adicionarRefeicao(alimento);
-        System.out.println("Alimento adicionado: " + alimento);
     }
 
-    public void removerAlimento(Paciente paciente) {
-        if (paciente.getDiarios().isEmpty()) {
-            System.out.println("Nenhum diário encontrado.");
-            return;
-        }
+    public boolean removerAlimento(Paciente paciente, int indiceAlimento) {
+        Diario diario = obterDiarioDoDia(paciente);
+        if (diario == null || diario.getRefeicoes().isEmpty()) return false;
 
-        paciente.visualizarDiario();
+        if (indiceAlimento < 0 || indiceAlimento >= diario.getRefeicoes().size()) return false;
 
-        System.out.println("Escolha o diário (número da refeição):");
-        int escolhaDiario = scanner.nextInt();
-        scanner.nextLine();
-
-        if (escolhaDiario < 1 || escolhaDiario > paciente.getDiarios().size()) {
-            System.out.println("Opção inválida!");
-            return;
-        }
-
-        Diario diario = paciente.getDiarios().get(escolhaDiario - 1);
-
-        if (diario.getRefeicoes().isEmpty()) {
-            System.out.println("Não há alimentos para remover.");
-            return;
-        }
-
-        System.out.println("Escolha o alimento a ser removido:");
-        for (int i = 0; i < diario.getRefeicoes().size(); i++) {
-            System.out.println((i + 1) + " - " + diario.getRefeicoes().get(i));
-        }
-
-        int escolhaAlimento = scanner.nextInt();
-        scanner.nextLine();
-
-        if (escolhaAlimento < 1 || escolhaAlimento > diario.getRefeicoes().size()) {
-            System.out.println("Opção inválida!");
-            return;
-        }
-
-        Alimento alimento = diario.getRefeicoes().get(escolhaAlimento - 1);
-        diario.removerRefeicao(alimento);
-        System.out.println("Alimento removido: " + alimento);
+        Alimento removido = diario.getRefeicoes().get(indiceAlimento);
+        diario.removerRefeicao(removido);
 
         if (diario.getRefeicoes().isEmpty()) {
             paciente.removerDiario(diario);
-            System.out.println("Diário removido pois não há mais alimentos.");
         }
+        return true;
+    }
+
+    public Diario obterDiarioDoDia(Paciente paciente) {
+        Date hoje = normalizarData(new Date());
+        Optional<Diario> diario = paciente.getDiarios().stream()
+                .filter(d -> normalizarData(d.getData()).equals(hoje))
+                .findFirst();
+        return diario.orElse(null);
+    }
+
+    public Diario buscarOuCriarDiarioDoDia(Paciente paciente) {
+        Diario diario = obterDiarioDoDia(paciente);
+        if (diario == null) {
+            diario = new Diario(new Date());
+            paciente.adicionarDiario(diario);
+        }
+        return diario;
+    }
+
+    private Date normalizarData(Date data) {
+        return new Date(data.getYear(), data.getMonth(), data.getDate());
     }
 }
