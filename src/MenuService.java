@@ -85,14 +85,16 @@ class MenuService {
     }
 
     private void mostrarMenuPaciente(Paciente paciente) {
+        ControllerComandos controlador = new ControllerComandos();
         boolean sair = false;
         while (!sair) {
             System.out.println("\nMENU PACIENTE");
             System.out.println("1 - Adicionar alimento");
             System.out.println("2 - Remover alimento");
             System.out.println("3 - Ver diário de hoje");
-            System.out.println("4 - Ver plano alimentar");
-            System.out.println("5 - Sair");
+            System.out.println("4 - Desfazer última ação");
+            System.out.println("5 - Ver plano alimentar");
+            System.out.println("6 - Sair");
 
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -109,7 +111,8 @@ class MenuService {
                     double calorias = scanner.nextDouble();
                     scanner.nextLine();
 
-                    diarioService.adicionarAlimento(paciente, nome, quantidade, calorias);
+                    Comando adicionar = new AdicionarAlimentoCommand(diarioService, paciente, nome, quantidade, calorias);
+                    controlador.executarComando(adicionar);
                     System.out.println("Alimento adicionado com sucesso!");
                 }
                 case 2 -> {
@@ -129,11 +132,9 @@ class MenuService {
                     int indice = scanner.nextInt() - 1;
                     scanner.nextLine();
 
-                    if (diarioService.removerAlimento(paciente, indice)) {
-                        System.out.println("Alimento removido com sucesso!");
-                    } else {
-                        System.out.println("Opção inválida ou alimento não encontrado.");
-                    }
+                    Comando remover = new RemoverAlimentoCommand(diarioService, paciente, indice);
+                    remover.executar();
+                    System.out.println("Alimento removido com sucesso!");
                 }
                 case 3 -> {
                     Diario diario = diarioService.obterDiarioDoDia(paciente);
@@ -146,8 +147,9 @@ class MenuService {
                         }
                     }
                 }
-                case 4 -> paciente.visualizarPlanoAlimentar();
-                case 5 -> sair = true;
+                case 4 -> controlador.desfazerUltimoComando();
+                case 5 -> paciente.visualizarPlanoAlimentar();
+                case 6 -> sair = true;
                 default -> System.out.println("Opção inválida!");
             }
         }

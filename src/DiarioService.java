@@ -1,28 +1,38 @@
 import java.util.Date;
 import java.util.Optional;
+import java.util.Calendar;
 
 class DiarioService {
 
-    public void adicionarAlimento(Paciente paciente, String nome, double quantidade, double calorias) {
+    public Alimento adicionarAlimento(Paciente paciente, String nome, double quantidade, double calorias) {
         Alimento alimento = new Alimento(nome, quantidade, calorias);
         Diario diario = buscarOuCriarDiarioDoDia(paciente);
         diario.adicionarRefeicao(alimento);
+        return alimento;
     }
 
-    public boolean removerAlimento(Paciente paciente, int indiceAlimento) {
+    public void adicionarAlimentoExistente(Paciente paciente, Alimento alimento) {
+        Diario diario = buscarOuCriarDiarioDoDia(paciente);
+        System.out.println("Reinserindo alimento em diário de: " + diario.getData());
+        diario.adicionarRefeicao(alimento);
+    }
+
+
+    public Alimento removerAlimento(Paciente paciente, int indice) {
         Diario diario = obterDiarioDoDia(paciente);
-        if (diario == null || diario.getRefeicoes().isEmpty()) return false;
-
-        if (indiceAlimento < 0 || indiceAlimento >= diario.getRefeicoes().size()) return false;
-
-        Alimento removido = diario.getRefeicoes().get(indiceAlimento);
-        diario.removerRefeicao(removido);
-
-        if (diario.getRefeicoes().isEmpty()) {
-            paciente.removerDiario(diario);
+        if (diario != null && indice >= 0 && indice < diario.getRefeicoes().size()) {
+            return diario.getRefeicoes().remove(indice);
         }
-        return true;
+        return null;
     }
+
+    public void removerAlimento(Paciente paciente, Alimento alimento) {
+        Diario diario = obterDiarioDoDia(paciente);
+        if (diario != null) {
+            diario.getRefeicoes().remove(alimento);
+        }
+    }
+
 
     public Diario obterDiarioDoDia(Paciente paciente) {
         Date hoje = normalizarData(new Date());
@@ -42,6 +52,12 @@ class DiarioService {
     }
 
     private Date normalizarData(Date data) {
-        return new Date(data.getYear(), data.getMonth(), data.getDate());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
     }
 }
