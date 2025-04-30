@@ -33,6 +33,10 @@ class Paciente extends Usuario {
         }
     }
 
+    public PlanoAlimentar getPlanoAlimentar() {
+        return planoAlimentar;
+    }
+
     @Override
     public void login() {
         System.out.println("Paciente logado com sucesso!");

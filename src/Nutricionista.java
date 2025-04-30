@@ -1,4 +1,3 @@
-
 public class Nutricionista extends Usuario {
     private String crn;
 
