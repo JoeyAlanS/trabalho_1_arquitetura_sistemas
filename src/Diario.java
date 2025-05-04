@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-class Diario {
+public class Diario implements RefeicaoIterable {
     private Date data;
     private List<Alimento> refeicoes = new ArrayList<>();
 
@@ -24,5 +24,10 @@ class Diario {
 
     public Date getData() {
         return data;
+    }
+
+    @Override
+    public AlimentoIterator criarIterator() {
+        return new ListaAlimentoIterator(refeicoes);
     }
 }

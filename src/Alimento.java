@@ -1,4 +1,4 @@
-class Alimento {
+public class Alimento {
     private String nome;
     private double quantidade;
     private double calorias;
@@ -7,6 +7,18 @@ class Alimento {
         this.nome = nome;
         this.quantidade = quantidade;
         this.calorias = calorias;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getQuantidade() {
+        return quantidade;
+    }
+
+    public double getCalorias() {
+        return calorias;
     }
 
     @Override
