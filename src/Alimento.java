@@ -9,6 +9,12 @@ public class Alimento {
         this.calorias = calorias;
     }
 
+    @Override
+    public String toString() {
+        return nome + " - " + quantidade + "g, " + calorias + " calorias";
+    }
+
+
     public String getNome() {
         return nome;
     }
@@ -19,10 +25,5 @@ public class Alimento {
 
     public double getCalorias() {
         return calorias;
-    }
-
-    @Override
-    public String toString() {
-        return nome + " - " + quantidade + "g, " + calorias + " calorias";
     }
 }
