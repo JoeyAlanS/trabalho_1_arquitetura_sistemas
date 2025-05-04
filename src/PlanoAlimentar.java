@@ -2,19 +2,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-class PlanoAlimentar {
+public class PlanoAlimentar {
     private int id;
     private String nome;
     private String descricao;
     private Date dataCriacao;
     private List<Alimento> refeicoes = new ArrayList<>();
 
-    public PlanoAlimentar(int id, String nome, String descricao, Date dataCriacao) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.dataCriacao = dataCriacao;
-    }
+    // Mudança no construtor, tornando ele privado para o padrão builder
+    private PlanoAlimentar() {}
 
     public void adicionarRefeicao(Alimento alimento) {
         refeicoes.add(alimento);
@@ -38,4 +34,47 @@ class PlanoAlimentar {
         return sb.toString();
     }
 
+    // --- Builder ---
+    public static class Builder {
+        private int id;
+        private String nome;
+        private String descricao;
+        private Date dataCriacao;
+        private List<Alimento> refeicoes = new ArrayList<>();
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder setDescricao(String descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public Builder setDataCriacao(Date dataCriacao) {
+            this.dataCriacao = dataCriacao;
+            return this;
+        }
+
+        public Builder adicionarRefeicao(Alimento alimento) {
+            this.refeicoes.add(alimento);
+            return this;
+        }
+
+        public PlanoAlimentar build() {
+            PlanoAlimentar plano = new PlanoAlimentar();
+            plano.id = this.id;
+            plano.nome = this.nome;
+            plano.descricao = this.descricao;
+            plano.dataCriacao = this.dataCriacao;
+            plano.refeicoes = this.refeicoes;
+            return plano;
+        }
+    }
 }

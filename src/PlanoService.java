@@ -4,10 +4,18 @@ import java.util.List;
 class PlanoService {
 
     public void criarPlano(Nutricionista nutricionista, Paciente paciente, String nomePlano, String descricao, List<Alimento> alimentos) {
-        PlanoAlimentar plano = new PlanoAlimentar(1, nomePlano, descricao, new Date());
+        PlanoAlimentar.Builder builder = new PlanoAlimentar.Builder()
+                .setId(1)
+                .setNome(nomePlano)
+                .setDescricao(descricao)
+                .setDataCriacao(new Date());
+
         for (Alimento alimento : alimentos) {
-            plano.adicionarRefeicao(alimento);
+            builder.adicionarRefeicao(alimento);
         }
+
+        PlanoAlimentar plano = builder.build();
+
         nutricionista.criarPlanoAlimentar(paciente, plano);
     }
 
